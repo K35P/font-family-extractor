@@ -26,8 +26,6 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Substitute `USERNAME` with your GitHub user or organization, or copy the clone URL from the **Code** button on GitHub.
-
 ## Usage
 
 ```bash
