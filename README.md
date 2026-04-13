@@ -1,4 +1,4 @@
-# fontFamilyExtractor
+# Font Family Extractor
 
 A small command-line utility that reads a **variable font** (TrueType or OpenType with an `fvar` table) and exports **one static font file per named instance** defined in that table. Output files are written to a directory named after the source font file (without extension), placed next to the input by default.
 
