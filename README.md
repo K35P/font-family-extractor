@@ -11,26 +11,31 @@ A small command-line utility that reads a **variable font** (TrueType or OpenTyp
 
 ## Requirements
 
-- **Python** 3.10+ (3.10+ recommended; tested with recent 3.x releases)
-- **fontTools** 4.50 or newer (see `requirements.txt`)
+- **Python** 3.10 or newer (the script uses only the standard library plus fontTools)
+- **fontTools** 4.50 or newer (see [`requirements.txt`](requirements.txt))
+
+Supported input extensions are **`.ttf`** and **`.otf`**. TrueType Collection (`.ttc`) files are not supported.
 
 ## Installation
 
-Clone the repository and install dependencies in a virtual environment:
-
 ```bash
+git clone https://github.com/K35P/font-family-extractor.git
+cd font-family-extractor
 python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+Substitute `USERNAME` with your GitHub user or organization, or copy the clone URL from the **Code** button on GitHub.
+
 ## Usage
 
 ```bash
 python extract.py path/to/YourVariableFont.ttf
+python extract.py path/to/YourVariableFont.otf
 ```
 
-This creates `path/to/YourVariableFont/` (same base name as the file, no extension) and writes one static font per named instance.
+This creates `path/to/YourVariableFont/` (same base name as the file, no extension) and writes one static font per named instance. Use `python extract.py -h` for options.
 
 ### Custom output directory
 
@@ -67,12 +72,13 @@ fonts/
 
 ## How instance filenames are chosen
 
-Each instance uses its **subfamily name** from the font’s `name` table (via `subfamilyNameID` in `fvar`). Spaces are replaced with underscores, characters that are invalid in file names are replaced, and leading or trailing dots or spaces are stripped. If two instances would map to the same filename, a numeric suffix is appended.
+Each instance uses its **subfamily name** from the font’s `name` table (via `subfamilyNameID` in `fvar`). If that name ID cannot be resolved, the file is named `instance_<id>`. Spaces are replaced with underscores, characters that are invalid in file names are replaced, and leading or trailing dots or spaces are stripped. If two instances would map to the same filename, a numeric suffix is appended.
 
 ## Limitations
 
 - Only fonts that expose a non-empty set of **named instances** in `fvar` are supported. Axes-only variable fonts with no predefined instances will exit with an error.
 - The tool does not synthesize intermediate weights or widths; it only exports what the font author registered as instances.
+- **Invalid or unreadable** font files (or non-font data) are reported with a short error message and a non-zero exit code; the script does not print a Python traceback for typical fontTools read errors.
 - Ensure you have the **legal right** to process and redistribute the fonts you use; this repository only provides the extraction script.
 
 ## License
